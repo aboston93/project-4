@@ -136,10 +136,6 @@ REACT_APP_DIR = "client"
 
 STATICFILES_DIRS = [
       os.path.join(REACT_APP_DIR, 'build', 'static')
-
-  ]
-STATICFILES_DIRS = [
-   os.path.join(REACT_APP_DIR, 'build', 'static')
 ]
 
 django_heroku.settings(locals())
