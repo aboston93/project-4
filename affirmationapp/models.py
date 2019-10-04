@@ -7,7 +7,7 @@ class User(models.Model):
 
 
 
-class Issue(models.Model):
+class Goals(models.Model):
     # add the different fields of our model
     # see https://docs.djangoproject.com/en/2.2/ref/models/fields/ for the 
     # different kinds of fields you can use
