@@ -2,8 +2,8 @@ from django.db import models
 
 
 class User(models.Model):
-    username = models.CharField(max_length=30)
-    email = models.CharField(max_length=30)
+    username = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
 
 
 
@@ -21,6 +21,5 @@ class TaskItem(models.Model):
 class Media(models.Model):
      description = models.CharField(max_length=1000)
      status = models.BooleanField()
-     CreatedOn = models.DateTimeField(auto_now=True)
      url = models.CharField(max_length=300)
      user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="users")

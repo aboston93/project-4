@@ -3,12 +3,12 @@ from .serializers import IssueSerializer,UserSerializer
 from .models import Issue,User         
                                                                     
     
-class IssueViewSet(viewsets.ModelViewSet):    
+class MediaViewSet(viewsets.ModelViewSet):    
     """    
     API endpoint that allows users to be viewed or edited.    
     """    
-    queryset = Issue.objects.all()    
-    serializer_class = IssueSerializer
+    queryset = Media.objects.all()    
+    serializer_class = MediaSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):    
@@ -18,6 +18,13 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()    
     serializer_class = UserSerializer
 
+
+class TaskItemViewSet(viewsets.ModelViewSet):    
+    """    
+    API endpoint that allows users to be viewed or edited.    
+    """    
+    queryset = TaskItem.objects.all()    
+    serializer_class = TaskItemSerializer
 
 
 # Create your views here.
