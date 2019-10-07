@@ -14,8 +14,7 @@ class App extends React.Component {
     <Button variant="contained" color="primary">
     Hello World
   </Button>
-  <Container maxWidth="sm">
-    </Container>
+  
   </Box>
  
 
