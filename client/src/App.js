@@ -5,8 +5,8 @@ import './App.css';
 
 
 
-function App() {
-  return (
+class App extends React.Component {
+  render = () => (
     <Button variant="contained" color="primary">
     Hello World
   </Button>
