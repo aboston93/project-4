@@ -22,4 +22,5 @@ class Media(models.Model):
      description = models.CharField(max_length=1000)
      status = models.BooleanField()
      url = models.CharField(max_length=300)
-     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="users")
+     taskitem = models.ForeignKey(User,on_delete=models.CASCADE,related_name="taskitem")
+    #  user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="users")

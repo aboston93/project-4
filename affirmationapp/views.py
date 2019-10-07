@@ -1,6 +1,6 @@
 from rest_framework import viewsets    
-from .serializers import IssueSerializer,UserSerializer    
-from .models import Issue,User         
+from .serializers import MediaSerializer,UserSerializer,TaskItemSerializer  
+from .models import TaskItem,User,Media         
                                                                     
     
 class MediaViewSet(viewsets.ModelViewSet):    

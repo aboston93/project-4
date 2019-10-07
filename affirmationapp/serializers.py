@@ -1,10 +1,10 @@
 from rest_framework import serializers    
-from .models import Issue,User
+from .models import TaskItem,User,Media
      
 class TaskItemSerializer(serializers.ModelSerializer):  
     class Meta:
-        model = Issue
-        fields = ['id', 'description', 'status','createdOn','user']
+        model = TaskItem
+        fields = ['id', 'description', 'status','CreatedOn','user']
 
 
 class UserSerializer(serializers.ModelSerializer):  
@@ -14,6 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class MediaSerializer(serializers.ModelSerializer):  
     class Meta:     
-        model = User    
+        model = Media    
   
-        fields = ['id','email','url','status','user','description']
+        fields = ['id','email','url','status', 'description','taskitem']
