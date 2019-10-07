@@ -6,7 +6,7 @@ import './App.css';
 
 
 function App() {
-  render (
+  return (
     <Button variant="contained" color="primary">
     Hello World
   </Button>
