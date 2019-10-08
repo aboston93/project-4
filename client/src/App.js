@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+
 import './App.css';
-import Box from '@material-ui/core/Box';
+
 
 const taskPreview = (task) => (
   <li>{task.id} - {task.description}</li>
@@ -21,8 +21,8 @@ const userTaskList = (user) => (
 )
 
 const orderByCreatedOn = (task1, task2) => {
-  let task1 = new Date(task1.createdOn)
-  let task2 = new Date(task2.createdOn)
+   task1 = new Date(task1.createdOn)
+ task2 = new Date(task2.createdOn)
 
   return Math.sign(task2.getTime() - task1.getTime())
 }
