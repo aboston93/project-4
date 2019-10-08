@@ -107,7 +107,7 @@ class NewTaskForm extends React.Component {
   render = () => (
     <form onSubmit={this.handleSubmit}>
       <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="Description" />
-      <input type="submit"                    value="New Issue" />
+      <input type="submit"                    value="New Task" />
     </form>
   )
 }
@@ -117,7 +117,7 @@ const testUsers =
     { id : 1
     , email  : "foo@foo.com"
     , username: "Bob"
-    , issues : 
+    , tasks : 
         [ {description: "a test issue 2", status: true, id: 2, createdOn: "2019-09-28T15:05:18.180058Z"}
         , {description: "a test issue"  , status: true, id: 1, createdOn: "2019-09-27T15:05:18.180058Z"}
         , {description: "a test issue 3", status: true, id: 3, createdOn: "2019-09-29T15:05:18.180058Z"}
@@ -127,7 +127,7 @@ const testUsers =
     { id : 7
     , email  : "bar@bar.com"
     , username: "Joe"
-    , issues : 
+    , tasks : 
         [ {description: "a joes test issue 2", status: true, id: 2, createdOn: "2019-09-28T15:05:18.180058Z"}
         , {description: "a joes test issue"  , status: true, id: 1, createdOn: "2019-09-27T15:05:18.180058Z"}
         , {description: "a joes test issue 3", status: true, id: 3, createdOn: "2019-09-29T15:05:18.180058Z"}
@@ -139,24 +139,24 @@ const getUsersFromServer = () =>
   fetch('/api/user/')
     .then(res => res.json())
 
-const getIssuesFromServer = () =>
-  fetch('/api/issue/')
+const getTasksFromServer = () =>
+  fetch('/api/taskitem/')
     .then(res => res.json())
 
-const objectFromListById = (users, issues) =>
+const objectFromListById = (users, tasks) =>
   //convert from an array of user objects to an
   //object of user objects where the keys are user ids
   users.reduce((obj, user) => { 
     //get all issues belonging to the user
-    user.issues = issues.filter(issue => issue.user === user.id);
+    user.tasks = tasks.filter(task => task.user === user.id);
     obj[user.id] = user; 
     return obj; 
   }, {})
 
 const getUsersAndIssuesFromServer = () =>
   getUsersFromServer().then(users => 
-  getIssuesFromServer().then(issues =>
-      objectFromListById(users, issues)
+  getTasksFromServer().then(tasks =>
+      objectFromListById(users, tasks)
   ))
 
 const saveUserToServer = (newUser) => 
@@ -167,20 +167,94 @@ const saveUserToServer = (newUser) =>
     }
   ).then(res => res.json())
 
-
+  const saveTaskToServer = (newTask) => 
+  fetch('/api/taskitem/',
+    { method  : "POST"
+    , headers : { "Content-Type": "application/json" }
+    , body    : JSON.stringify(newTask)
+    }
+  ).then(res => res.json())
 
 // slowly building out componets 
 class App extends React.Component {
-  render = () => (
-    <Box color="text.primary" clone>
-    <Button variant="contained" color="primary">
-    Hello World
-  </Button>
-  
-  </Box>
- 
 
-  );
+  state = {
+    currentUser: 1,
+    users: testUsers
+  }
+
+  componentDidMount = () => {
+    //saveUserToServer({username: "testUser", email: "foo@foobar.com"})
+    getUsersAndIssuesFromServer()
+      .then(users => {
+        this.setState({ users })
+      })
+  }
+
+  getNextId = () =>
+    //gets the max id from the isssues of the current user
+    Math.max(...this.getCurrentUser().tasks.map(task => task.id)) + 1
+
+  addNewTaskCurrentUser = (description) => {
+    const newTask = 
+      { description
+      , status: true
+      , id: this.getNextId()
+      , createdOn: new Date().toISOString()
+      }
+
+    let users = {...this.state.users};
+
+    users[this.state.currentUser].issues.push(newTask);
+
+    this.setState({ users });
+  }
+
+  getNextUserId = () =>
+    Math.max(...this.getAllUsers().map(user => user.id)) + 1
+
+  addNewUser = (newUserInfo) => {
+    saveUserToServer(newUserInfo)
+      .then(newUser => {
+        console.log(newUser);
+        newUser.tasks = [];
+
+        let users = {...this.state.users};
+
+        users[newUser.id] = newUser;
+
+        this.setState({ users, currentUser: newUser.id });
+    })
+  }
+
+  getCurrentUser = () =>
+    this.state.users[this.state.currentUser]
+
+  getAllUsers = () =>
+    Object.values(this.state.users)
+
+  getAllTasks = () =>
+    this.getAllUsers().flatMap(user => user.tasks)
+    //this.getAllUsers().map(user => user.issues).flat()
+  
+  setCurrentUser = (currentUser) => {
+    this.setState({ currentUser })
+  }
+
+  render = () => (
+    <div className="container">
+      <aside className="sidebar">
+        <NewUserForm addNewUser={this.addNewUser}/>
+        <NewTaskForm addNewIssue={this.addNewTaskCurrentUser} />
+        {recentIssues(this.getAllIssues())}
+      </aside>
+
+      <article className="mainContent">
+        {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
+        {userTaskList(this.getCurrentUser())}
+      </article>
+    </div>
+  )
 }
 
 export default App;
