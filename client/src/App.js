@@ -80,20 +80,28 @@ class NewUserForm extends React.Component {
   )
 }
 
-class NewIssueForm extends React.Component {
+class NewTaskForm extends React.Component {
   state = {
     description: ""
+    ,status:""
+    ,createdOn:""
+    
   }
 
   handleInput = (evnt) => {
-    this.setState({description: evnt.target.value})
+    let newTask = {...this.state};
+
+    newTask[evnt.target.name] = evnt.target.value;
+
+    this.setState(newTask)
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
-    this.props.addNewIssue(this.state.description)
-    this.setState({ description: "" })
+    this.props.addNewTask(this.state.description)
+    this.setState({ description: "",status:""
+    ,createdOn:"" })
   }
 
   render = () => (
