@@ -181,7 +181,7 @@ class App extends React.Component {
   state = {
     currentUser: 1,
     users: testUsers
-    ,task: testasks
+    ,task: ""
   }
 
   componentDidMount = () => {
@@ -232,7 +232,7 @@ class App extends React.Component {
     saveTaskToServer(newTaskInfo)
       .then(newTask => {
         console.log(newTask);
-        newUser.tasks = [];
+        newTask.tasks = [];
 
         let tasks = {...this.state.tasks};
 
@@ -269,8 +269,8 @@ class App extends React.Component {
     <div className="container">
       <aside className="sidebar">
         <NewUserForm addNewUser={this.addNewUser}/>
-        <NewTaskForm addNewIssue={this.addNewTaskCurrentUser} />
-        {recentIssues(this.getAllIssues())}
+        <NewTaskForm addNewTask={this.addNewTaskCurrentUser} />
+        {recentTasks(this.getAllTasks())}
       </aside>
 
       <article className="mainContent">
