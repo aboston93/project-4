@@ -181,6 +181,7 @@ class App extends React.Component {
   state = {
     currentUser: 1,
     users: testUsers
+    ,task: testasks
   }
 
   componentDidMount = () => {
@@ -227,8 +228,27 @@ class App extends React.Component {
     })
   }
 
+  addNewTask = (newTaskInfo) => {
+    saveTaskToServer(newTaskInfo)
+      .then(newTask => {
+        console.log(newTask);
+        newUser.tasks = [];
+
+        let tasks = {...this.state.tasks};
+
+        tasks[newTask.id] = newTask;
+
+        this.setState({ tasks, currentTask: newTask.id });
+    })
+  }
+
+
   getCurrentUser = () =>
     this.state.users[this.state.currentUser]
+  
+  getCurrentTask = () =>
+    this.state.tasks[this.state.currentTask]
+  
 
   getAllUsers = () =>
     Object.values(this.state.users)
@@ -239,6 +259,10 @@ class App extends React.Component {
   
   setCurrentUser = (currentUser) => {
     this.setState({ currentUser })
+  }
+
+  setCurrentTask = (currentTask) => {
+    this.setState({ currentTask })
   }
 
   render = () => (
