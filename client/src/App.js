@@ -152,7 +152,7 @@ const objectFromListById = (users, tasks) =>
     return obj; 
   }, {})
 
-const getUsersAndIssuesFromServer = () =>
+const getUsersAndTasksFromServer = () =>
   getUsersFromServer().then(users => 
   getTasksFromServer().then(tasks =>
       objectFromListById(users, tasks)
