@@ -83,8 +83,7 @@ class NewUserForm extends React.Component {
 class NewTaskForm extends React.Component {
   state = {
     description: ""
-    ,status:""
-    ,createdOn:""
+   
     
   }
 
@@ -186,7 +185,7 @@ class App extends React.Component {
 
   componentDidMount = () => {
     //saveUserToServer({username: "testUser", email: "foo@foobar.com"})
-    getUsersAndIssuesFromServer()
+    getUsersAndTasksFromServer()
       .then(users => {
         this.setState({ users })
       })
