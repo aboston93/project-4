@@ -106,7 +106,7 @@ class NewTaskForm extends React.Component {
 
   render = () => (
     <form onSubmit={this.handleSubmit}>
-      <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="Description" />
+      <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
       <input type="submit"                    value="New Task" />
     </form>
   )
@@ -232,7 +232,7 @@ class App extends React.Component {
     saveTaskToServer(newTaskInfo)
       .then(newTask => {
         console.log(newTask);
-        newTask.tasks = [];
+        newTask.users = [];
 
         let tasks = {...this.state.tasks};
 
