@@ -234,11 +234,11 @@ class App extends React.Component {
         console.log(newTask);
         newTask.users = [];
 
-        let tasks = {...this.state.tasks};
+        let task = {...this.state.task};
 
-        tasks[newTask.id] = newTask;
+        task[newTask.id] = newTask;
 
-        this.setState({ tasks, currentTask: newTask.id });
+        this.setState({ task, currentTask: newTask.id });
     })
   }
 
