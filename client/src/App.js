@@ -228,19 +228,7 @@ class App extends React.Component {
     })
   }
 
-  addNewTask = (newTaskInfo) => {
-    saveTaskToServer(newTaskInfo)
-      .then(newTask => {
-        console.log(newTask);
-        newTask.users = [];
-
-        let task = {...this.state.task};
-
-        task[newTask.id] = newTask;
-
-        this.setState({ task, currentTask: newTask.id });
-    })
-  }
+  
 
 
   getCurrentUser = () =>
