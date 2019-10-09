@@ -2,6 +2,18 @@ import React from 'react';
 
 import './App.css';
 
+const imagePreview = (url) => (
+  <div>
+  <img src= {data.picture} alt="Character Image" />
+</div>
+)
+
+const imageList = (urls) => (
+<div>
+  {urls.map(imagepreview)}
+</div>
+
+)
 
 const taskPreview = (task) => (
   <li>{task.id} - {task.description}</li>
@@ -11,6 +23,16 @@ const taskList = (tasks) => (
   <ul>
     {tasks.map(taskPreview)}
   </ul>
+)
+
+userImageList = (user) => (
+<div>
+  {user.email}
+  {imageList(user.urls)}
+</div>
+
+
+
 )
 
 const userTaskList = (user) => (
@@ -51,23 +73,24 @@ const userList = (users, currentUserId, onChange) => (
 
 class NewUserForm extends React.Component {
 
-  state = 
-    { username: ""
-    , email   : ""
-    }
+  state = {newUser:
+    
+    
+    { username: "", email: ""}
+  }
 
   handleInput = (evnt) => {
-    let newUser = {...this.state};
+    let newUser = {...this.state.newUser};
 
     newUser[evnt.target.name] = evnt.target.value;
 
-    this.setState(newUser)
+    this.setState({newUser})
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
-    this.props.addNewUser(this.state)
+    this.props.addNewUser(this.state.newUser)
     this.setState({ username: "", email: ""})
   }
 
@@ -75,18 +98,16 @@ class NewUserForm extends React.Component {
     <form onSubmit={this.handleSubmit}>
       <input type="text"   name="username" onChange={this.handleInput} value={this.state.username} placeholder="User Name"/>
       <input type="email"  name="email"    onChange={this.handleInput} value={this.state.email}    placeholder="Email"/>
-      <input type="submit"                 value="New User" />
+      <input type="submit"                 value="NewUser" />
     </form>
   )
 }
 
 class NewTaskForm extends React.Component {
-  state = {
-    description: ""
-   
-    
+  state ={ newTask:
+  
+    {description: ""}
   }
-
   handleInput = (evnt) => {
     let newTask = {...this.state};
 
@@ -135,11 +156,11 @@ const testUsers =
   }
 
 const getUsersFromServer = () => 
-  fetch('/api/user/')
+  fetch("/api/user/")
     .then(res => res.json())
 
 const getTasksFromServer = () =>
-  fetch('/api/taskitem/')
+  fetch("/api/taskitem/")
     .then(res => res.json())
 
 const objectFromListById = (users, tasks) =>
@@ -159,7 +180,7 @@ const getUsersAndTasksFromServer = () =>
   ))
 
 const saveUserToServer = (newUser) => 
-  fetch('/api/user/',
+  fetch("/api/user/",
     { method  : "POST"
     , headers : { "Content-Type": "application/json" }
     , body    : JSON.stringify(newUser)
@@ -167,7 +188,7 @@ const saveUserToServer = (newUser) =>
   ).then(res => res.json())
 
   const saveTaskToServer = (newTask) => 
-  fetch('/api/taskitem/',
+  fetch("/api/taskitem/",
     { method  : "POST"
     , headers : { "Content-Type": "application/json" }
     , body    : JSON.stringify(newTask)
@@ -187,7 +208,7 @@ class App extends React.Component {
     //saveUserToServer({username: "testUser", email: "foo@foobar.com"})
     getUsersAndTasksFromServer()
       .then(users => {
-        this.setState({ users })
+        this.setState({ users, })
       })
   }
 
@@ -205,7 +226,7 @@ class App extends React.Component {
 
     let users = {...this.state.users};
 
-    users[this.state.currentUser].issues.push(newTask);
+    users[this.state.currentUser].tasks.push(newTask);
 
     this.setState({ users });
   }
@@ -214,6 +235,7 @@ class App extends React.Component {
     Math.max(...this.getAllUsers().map(user => user.id)) + 1
 
   addNewUser = (newUserInfo) => {
+    console.log(newUserInfo)
     saveUserToServer(newUserInfo)
       .then(newUser => {
         console.log(newUser);
