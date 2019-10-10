@@ -4,7 +4,7 @@ import './App.css';
 
 const imagePreview = (url) => (
   <div>
-  <img src= {data.picture} alt="Character Image" />
+  <img src= {media.url} alt="Character Image" />
 </div>
 )
 
@@ -16,7 +16,7 @@ const imageList = (urls) => (
 )
 
 const taskPreview = (task) => (
-  <li>{task.id} - {task.description}</li>
+  <li>{task.id} - {task.description}-{task.createdOn}</li>
 )
 
 const taskList = (tasks) => (
@@ -127,6 +127,8 @@ class NewTaskForm extends React.Component {
   render = () => (
     <form onSubmit={this.handleSubmit}>
       <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
+      <input type="checkbox"   name="status" onChange={this.handleInput} value={this.state.description} placeholder="description" />
+      <input type="date"   name="createdOn" onChange={this.handleInput} value={this.state.description} placeholder="description" />
       <input type="submit"                    value="New Task" />
     </form>
   )
