@@ -2,21 +2,21 @@ import React from 'react';
 
 import './App.css';
 
-const imagePreview = (url) => (
+const imagePreview = (media) => (
   <div>
   <img src= {media.url} alt="Character Image" />
 </div>
 )
 
-const imageList = (urls) => (
+const imageList = (medias) => (
 <div>
-  {urls.map(imagepreview)}
+  {medias.map(imagePreview)}
 </div>
 
 )
 
 const taskPreview = (task) => (
-  <li>{task.id} - {task.description}-{task.createdOn}</li>
+  <li>{task.id} - {task.description}-{task.createdOn}-{task.status}</li>
 )
 
 const taskList = (tasks) => (
@@ -25,9 +25,9 @@ const taskList = (tasks) => (
   </ul>
 )
 
-userImageList = (user) => (
+const userImageList = (user) => (
 <div>
-  {user.email}
+  {user.username}
   {imageList(user.urls)}
 </div>
 
@@ -37,7 +37,7 @@ userImageList = (user) => (
 
 const userTaskList = (user) => (
   <div>
-    {user.email}
+    {user.username}
     {taskList(user.tasks)}
   </div>
 )
@@ -128,7 +128,35 @@ class NewTaskForm extends React.Component {
     <form onSubmit={this.handleSubmit}>
       <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
       <input type="checkbox"   name="status" onChange={this.handleInput} value={this.state.description} placeholder="description" />
-      <input type="date"   name="createdOn" onChange={this.handleInput} value={this.state.description} placeholder="description" />
+      <input type="submit"                    value="New Task" />
+    </form>
+  )
+}
+class NewMediaForm extends React.Component {
+  state ={ newTask:
+  
+    {description: ""}
+  }
+  handleInput = (evnt) => {
+    let newTask = {...this.state};
+
+    newTask[evnt.target.name] = evnt.target.value;
+
+    this.setState(newTask)
+  }
+
+  handleSubmit = (evnt) => {
+    evnt.preventDefault();
+
+    this.props.addNewTask(this.state.description)
+    this.setState({ description: "",status:""
+    ,createdOn:"" })
+  }
+
+  render = () => (
+    <form onSubmit={this.handleSubmit}>
+      <input type="text"   name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
+      <input type="checkbox"   name="status" onChange={this.handleInput} value={this.state.description} placeholder="description" />
       <input type="submit"                    value="New Task" />
     </form>
   )
@@ -165,6 +193,10 @@ const getTasksFromServer = () =>
   fetch("/api/taskitem/")
     .then(res => res.json())
 
+    const getMediaFromServer = () =>
+    fetch("/api/media/")
+      .then(res => res.json())
+    
 const objectFromListById = (users, tasks) =>
   //convert from an array of user objects to an
   //object of user objects where the keys are user ids
@@ -178,8 +210,9 @@ const objectFromListById = (users, tasks) =>
 const getUsersAndTasksFromServer = () =>
   getUsersFromServer().then(users => 
   getTasksFromServer().then(tasks =>
-      objectFromListById(users, tasks)
-  ))
+  getMediaFromServer().then(media =>
+      objectFromListById(users, tasks,media)
+  )))
 
 const saveUserToServer = (newUser) => 
   fetch("/api/user/",
@@ -282,6 +315,7 @@ class App extends React.Component {
         <NewUserForm addNewUser={this.addNewUser}/>
         <NewTaskForm addNewTask={this.addNewTaskCurrentUser} />
         {recentTasks(this.getAllTasks())}
+      }
       </aside>
 
       <article className="mainContent">
