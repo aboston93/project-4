@@ -4,7 +4,7 @@ import './App.css';
 
 const imagePreview = (media) => (
   <div>
-    <img src={user.media.url} alt="Character Image" />
+    <img src={media.url} alt="Character Image" />
   </div>
 )
 
@@ -234,13 +234,31 @@ const objectFromListById = (users, tasks) =>
     return obj;
   }, {})
 
+  const objectFromListByIdMedia = (users, medias) =>
+  //convert from an array of user objects to an
+  //object of user objects where the keys are user ids
+  users.reduce((obj, user) => {
+    //get all issues belonging to the user
+    user.medias = medias.filter(media => media.user === user.id);
+    obj[user.id] = user;
+    return obj;
+  }, {})
+
 const getUsersAndTasksAndMediaFromServer = () =>
   getUsersFromServer().then(users =>
     getTasksFromServer().then(tasks =>
-      getMediasFromServer().then(medias =>
+      
 
-        objectFromListById(users, tasks, medias)
-      )))
+        objectFromListById(users, tasks)
+      ))
+
+const getUsersAndMediaFromServer = () =>
+      getUsersFromServer().then(users =>
+        getMediasFromServer().then(medias =>
+          
+    
+            objectFromListByIdMedia(users, medias)
+          ))     
 
 const saveUserToServer = (newUser) =>
   fetch("/api/user/",
@@ -276,8 +294,12 @@ class App extends React.Component {
       .then(users => {
         this.setState({ users, })
       })
-  }
 
+      getUsersAndMediaFromServer()
+      .then(users => {
+        this.setState({users, })
+  })
+  }
   getNextId = () =>
     //gets the max id from the isssues of the current user
     Math.max(...this.getCurrentUser().tasks.map(task => task.id)) + 1
