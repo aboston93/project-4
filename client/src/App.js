@@ -140,7 +140,7 @@ class NewTaskForm extends React.Component {
       <input type="text" name="status" onChange={this.handleInput} value={this.state.status} placeholder="status" />
       <input type="text" name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
     
-      <input type="submit" value="New Task" />
+      <input type="submit" value="Media Save" />
     </form>
   )
 }
