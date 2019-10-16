@@ -2,27 +2,42 @@ import React from 'react';
 
 import './App.css';
 
-const mediaPreview= (media) => (
-  <li>{media.url}</li>
-)
+const getUsersFromServer = () =>
+  fetch("/api/user/")
 
-const MediaList = (medias) => (
-  <ul>
-    {medias.map(mediaPreview)}
-  </ul>
-)
+    .then(res => res.json())
+
+const getTasksFromServer = () =>
+  fetch("/api/taskitem/")
+    .then(res => res.json())
+
+const getMediasFromServer = () =>
+  fetch("/api/media/")
+    .then(res => res.json())
+
+// const mediaPreview= (media) => (
+//   console.log(media),
+//   <li>{media.url}</li>
+// )
+// mediaPreview()
+
+// const MediaList = (medias) => (
+//   <ul>
+//     {medias.map(mediaPreview)}
+//   </ul>
+// )
 
 
-const userMediaList = (user) => (
-  <div>
-    {user.username}
-    {MediaList(user.medias)}
-  </div>
-)
+// const userMediaList = (user) => (
+//   <div>
+//     {user.username}
+//     {MediaList(user.medias)}
+//   </div>
+// )
 
 
 const taskPreview = (task) => (
-  <li className = "taskstyle">{task.id} - {task.status} - <img src= {task.description} alt="Character Image" />-{task.createdOn}</li>
+  <li>  {task.id} - {task.status} -  {task.description} - {task.createdOn} </li>
 )
 
 const taskList = (tasks) => (
@@ -101,8 +116,8 @@ class NewUserForm extends React.Component {
   }
 
   render = () => (
-    <form onSubmit={this.handleSubmit} className = "userstyle">
-      <h3 className = "userheader">Join the the group and add to the continuim</h3>
+    <form onSubmit={this.handleSubmit} className="userstyle">
+      <h3 className="userheader">Join the the group and add to the continuim</h3>
       <input type="text" name="username" onChange={this.handleInput} value={this.state.username} placeholder="User Name" />
       <input type="email" name="email" onChange={this.handleInput} value={this.state.email} placeholder="Email" />
       <input type="submit" value="NewUser" />
@@ -110,36 +125,85 @@ class NewUserForm extends React.Component {
   )
 }
 
-class NewTaskForm extends React.Component {
+
+class Mediashow extends React.Component {
+
+
+  state =
+    {
+      media: []
+    }
+
+
+  componentDidMount() {
+    getMediasFromServer()
+      .then(media => {
+        console.log(media)
+        this.setState({ media })
+      })
+
+  }
+
+
+  render = () => 
+    
+  { 
+    let tree = this.state.media.map(media=>{
+      return(
+        <img src =
+        {media.url}
+        />
+      )
+    })
+    return (
+
+      <ul>
+        {tree}
+      </ul>
+    )
+
+  }
+}
+
+
+
+
+
+
+
+
+
+    class NewTaskForm extends React.Component {
   state = {
     newTask:
 
-      { description: "" ,status:""}
+      { description: "", status: "" }
   }
   handleInput = (evnt) => {
     let newTask = { ...this.state.newTask };
 
     newTask[evnt.target.name] = evnt.target.value;
 
-    this.setState(newTask)
+    this.setState({ newTask })
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
-
+    console.log('handle submit')
     this.props.addNewTask(this.state.newTask)
-    this.setState({
-      description: "", status: ""
-      , createdOn: ""
-    })
+    window.location.reload()
+    // this.setState({
+    //   description: "", status: ""
+    //   , createdOn: ""
+    // })
   }
 
   render = () => (
-    <form onSubmit={this.handleSubmit} className= "taskform">
+    <form onSubmit={this.handleSubmit} className="taskform">
       <h3>input you meme here</h3>
-      <input type="text" name="status" onChange={this.handleInput} value={this.state.status} placeholder="status" />
-      <input type="text" name="description" onChange={this.handleInput} value={this.state.description} placeholder="description" />
-    
+      <input type="text" name="status" onChange={this.handleInput} value={this.state.newTask.status} placeholder="status" />
+      <input type="text" name="description" onChange={this.handleInput} value={this.state.newTask.description} placeholder="description" />
+
       <input type="submit" value="Media Save" />
     </form>
   )
@@ -187,18 +251,11 @@ const testMedias =
   }
 }
 
-const getUsersFromServer = () =>
-  fetch("/api/user/")
 
-    .then(res => res.json())
 
-const getTasksFromServer = () =>
-  fetch("/api/taskitem/")
-    .then(res => res.json())
 
-const getMediasFromServer = () =>
-  fetch("/api/media/")
-    .then(res => res.json())
+getMediasFromServer()
+
 
 const objectFromListById = (users, tasks) =>
   //convert from an array of user objects to an
@@ -211,7 +268,7 @@ const objectFromListById = (users, tasks) =>
   }, {})
 
 
-  const objectFromMediaListByUrl = (users, medias) =>
+const objectFromMediaListByUrl = (users, medias) =>
   //convert from an array of user objects to an
   //object of user objects where the keys are user ids
   users.reduce((obj, user) => {
@@ -219,15 +276,15 @@ const objectFromListById = (users, tasks) =>
     user.medias = medias.filter(media => media.user === media.id);
     obj[user.id] = user;
     return obj;
-  }, {})  
+  }, {})
 
 const getUsersAndTasksFromServer = () =>
   getUsersFromServer().then(users =>
     getTasksFromServer().then(tasks =>
-     
 
-        objectFromListById(users, tasks, )
-      ))
+
+      objectFromListById(users, tasks)
+    ))
 
 const saveUserToServer = (newUser) =>
   fetch("/api/user/",
@@ -253,41 +310,54 @@ class App extends React.Component {
   state = {
     currentUser: 1,
     users: testUsers
-    , task: ""
-  
+
+
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     //saveUserToServer({username: "testUser", email: "foo@foobar.com"})
     getUsersAndTasksFromServer()
-      .then(users=> {
+      .then(users => {
         this.setState({ users, })
       })
   }
+
+  // componentDidUpdate = () => {
+  //   console.log('updated')
+  //   getUsersAndTasksFromServer()
+  //     .then(users=> {
+  //       this.setState({ users, })
+  //     })
+  // }
 
   getNextId = () =>
     //gets the max id from the isssues of the current user
     Math.max(...this.getCurrentUser().tasks.map(task => task.id)) + 1
 
-  addNewTaskCurrentUser = (description,status,id,createdOn) => {
-    const newTask =
-    {
-      description
-      , status: true
-      , id: this.getNextId()
-      , createdOn: new Date().toISOString()
-    }
+  addNewTaskCurrentUser = (newTask) => {
+    //  newTask =
+    //   {
+    //     description:""
+    //     , status: true
+    //     , id: this.getNextId()
 
-    let users = { ...this.state.users };
+    //   }
+    saveTaskToServer(newTask)
+      .then(newTask => {
+        console.log(newTask);
+        newTask.tasks = [];
 
-    users[this.state.currentUser].tasks.push(newTask);
 
-    this.setState({ users });
+        let tasks = { ...this.state.tasks };
+        console.log('tasks', newTask)
+        // users[this.state.currentUser].tasks.push(newTask);
+
+        this.setState({ tasks });
+      })
   }
 
 
-  
-    
+
 
   getNextUserId = () =>
     Math.max(...this.getAllUsers().map(user => user.id)) + 1
@@ -325,7 +395,7 @@ class App extends React.Component {
   getAllTasks = () =>
     this.getAllUsers().flatMap(user => user.tasks)
   //this.getAllUsers().map(user => user.issues).flat()
-  
+
 
   setCurrentUser = (currentUser) => {
     this.setState({ currentUser })
@@ -345,18 +415,18 @@ class App extends React.Component {
       <aside className="sidebar">
         <NewUserForm addNewUser={this.addNewUser} />
         <NewTaskForm addNewTask={this.addNewTaskCurrentUser} />
-  
+        <Mediashow />
         {recentTasks(this.getAllTasks())}
-        
+
       </aside>
 
       <article className="mainContent">
         {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
         {userTaskList(this.getCurrentUser())}
-       
+
       </article>
     </div>
   )
 }
 
-export default App;
+export default App; 
