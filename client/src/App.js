@@ -15,25 +15,11 @@ const getMediasFromServer = () =>
   fetch("/api/media/")
     .then(res => res.json())
 
-// const mediaPreview= (media) => (
-//   console.log(media),
-//   <li>{media.url}</li>
-// )
-// mediaPreview()
-
-// const MediaList = (medias) => (
-//   <ul>
-//     {medias.map(mediaPreview)}
-//   </ul>
-// )
 
 
-// const userMediaList = (user) => (
-//   <div>
-//     {user.username}
-//     {MediaList(user.medias)}
-//   </div>
-// )
+
+
+
 
 
 const taskPreview = (task) => (
@@ -254,7 +240,7 @@ const testMedias =
 
 
 
-getMediasFromServer()
+
 
 
 const objectFromListById = (users, tasks) =>
