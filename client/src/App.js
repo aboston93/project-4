@@ -186,11 +186,11 @@ class Mediashow extends React.Component {
 
   render = () => (
     <form onSubmit={this.handleSubmit} className="taskform">
-      <h3>input you meme here</h3>
+      <h3>input you childs task here</h3>
       <input type="text" name="status" onChange={this.handleInput} value={this.state.newTask.status} placeholder="status" />
       <input type="text" name="description" onChange={this.handleInput} value={this.state.newTask.description} placeholder="description" />
 
-      <input type="submit" value="Media Save" />
+      <input type="submit" value="New Task" />
     </form>
   )
 }
@@ -295,7 +295,8 @@ class App extends React.Component {
 
   state = {
     currentUser: 1,
-    users: testUsers
+    users: testUsers,
+    task:""
 
 
   }
