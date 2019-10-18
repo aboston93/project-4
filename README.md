@@ -9,11 +9,11 @@ Deployed App Project Board
 <img src = "https://user-images.githubusercontent.com/4977418/67112118-7caaa700-f1a4-11e9-995b-19243d9df115.png"/>
 
 <img src = "https://user-images.githubusercontent.com/4977418/67112131-83d1b500-f1a4-11e9-8ea7-fb5492b79e18.png"/>
-Technologies Used: React express javascript node Material UI CSS 
-goals: provide a app the keeps trackof th memes video and gifs you collect over a lifetime
 
-Wireframes ERD [ IMG_2911 IMG_2912
+<h3>Technologies Used: React express javascript node Material UI CSS</h3>
 
-](url)
+
+<h4>goals: provide a app the keeps trackof th memes video and gifs you collect over a lifetime</h4>
+
 
 © 2019 GitHub, Inc.
