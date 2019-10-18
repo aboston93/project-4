@@ -5,7 +5,7 @@ Boston Resonsive Continuium
 <img src =" https://user-images.githubusercontent.com/4977418/67112079-67ce1380-f1a4-11e9-83d4-ced884fb57d2.png"/>
 Deployed App Project Board 
 
-https://user-images.githubusercontent.com/4977418/67112079-67ce1380-f1a4-11e9-83d4-ced884fb57d2.png
+<img src ="https://user-images.githubusercontent.com/4977418/67112079-67ce1380-f1a4-11e9-83d4-ced884fb57d2.png"/>
 
 Technologies Used: React express javascript node Material UI CSS 
 goals: provide a app the keeps trackof th memes video and gifs you collect over a lifetime
